@@ -31,17 +31,6 @@ module.exports = class PDFService extends cds.ApplicationService {
         );
       }
     });
-    this.on("pdfPreview", async (req) => {
-      const { BillingDocumentID } = req.params[0];
-      const attachment = await SELECT.one
-        .from("BillingDocumentAttachment")
-        .where({ BillingDocumentID_BillingDocumentID: BillingDocumentID });
-      if (!attachment || !attachment.PDFContent) {
-        return req.error(404, "No PDF generated yet for this document.");
-      }
-      const pdfBuffer = Buffer.from(attachment.PDFContent, "base64");
-      return pdfBuffer;
-    });
     this.on("signPdf", async (req) => {});
 
     return super.init();
